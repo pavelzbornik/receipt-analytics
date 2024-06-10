@@ -1,3 +1,38 @@
 [tool.isort]
 profile = "black"
 skip_glob = ["migrations/*"]
+
+[tool.poetry]
+name = "receipt-analytics"
+version = "0.1.0"
+description = ""
+authors = ["pavelzbornik <12965149+pavelzbornik@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "receipt_analytics"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+click = ">=7.0"
+flask = "3.0.3"
+werkzeug = "3.0.3"
+flask-sqlalchemy = "3.1.1"
+psycopg2-binary = "2.9.9"
+sqlalchemy = "2.0.30"
+flask-migrate = "4.0.7"
+email-validator = "2.1.1"
+flask-wtf = "1.2.1"
+wtforms = "3.1.2"
+gevent = "24.2.1"
+gunicorn = ">=19.9.0"
+supervisor = "4.2.5"
+flask-static-digest = "0.4.1"
+flask-bcrypt = "1.0.1"
+flask-login = "0.6.3"
+flask-caching = ">=2.0.2"
+flask-debugtoolbar = "0.15.1"
+environs = "11.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
