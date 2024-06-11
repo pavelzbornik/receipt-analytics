@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 """Database module, including the SQLAlchemy database object and DB-related utilities."""
 from typing import Optional, Type, TypeVar
+from sqlalchemy.orm import mapped_column, Mapped
 
+from datetime import datetime, timezone
 from .compat import basestring
 from .extensions import db
 
-T = TypeVar("T", bound="PkModel")
+T = TypeVar("T", bound="TableModel")
 
 # Alias common SQLAlchemy names
 Column = db.Column
@@ -50,11 +52,20 @@ class Model(CRUDMixin, db.Model):
     __abstract__ = True
 
 
-class PkModel(Model):
+class TableModel(Model):
     """Base model class that includes CRUD convenience methods, plus adds a 'primary key' column named ``id``."""
 
     __abstract__ = True
-    id = Column(db.Integer, primary_key=True)
+    # id = Column(db.Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, sort_order=-1)
+    created_at: Mapped[datetime] = mapped_column(
+        nullable=False, default=datetime.now(timezone.utc)
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        nullable=False,
+        default=datetime.now(timezone.utc),
+        onupdate=datetime.now(timezone.utc),
+    )
 
     @classmethod
     def get_by_id(cls: Type[T], record_id) -> Optional[T]:
@@ -70,7 +81,11 @@ class PkModel(Model):
 
 
 def reference_col(
-    tablename, nullable=False, pk_name="id", foreign_key_kwargs=None, column_kwargs=None
+    tablename,
+    nullable=False,
+    pk_name="id",
+    foreign_key_kwargs=None,
+    column_kwargs=None,
 ):
     """Column that adds primary key foreign key reference.
 
@@ -82,7 +97,7 @@ def reference_col(
     foreign_key_kwargs = foreign_key_kwargs or {}
     column_kwargs = column_kwargs or {}
 
-    return Column(
+    return mapped_column(
         db.ForeignKey(f"{tablename}.{pk_name}", **foreign_key_kwargs),
         nullable=nullable,
         **column_kwargs,

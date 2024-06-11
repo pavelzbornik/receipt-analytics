@@ -1,20 +1,26 @@
 # -*- coding: utf-8 -*-
 """User models."""
-import datetime as dt
-
 from flask_login import UserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
 
-from app.database import Column, PkModel, db, reference_col, relationship
+from app.database import (
+    Column,
+    TableModel,
+    db,
+    reference_col,
+    relationship,
+)
 from app.extensions import bcrypt
 
 
-class Role(PkModel):
+class Role(TableModel):
     """A role for a user."""
 
     __tablename__ = "roles"
-    name = Column(db.String(80), unique=True, nullable=False)
-    user_id = reference_col("users", nullable=True)
+    name: Mapped[str] = Column(db.String(80), unique=True, nullable=False)
+    user_id: Mapped[int] = reference_col("users", nullable=True)
     user = relationship("User", backref="roles")
 
     def __init__(self, name, **kwargs):
@@ -26,20 +32,21 @@ class Role(PkModel):
         return f"<Role({self.name})>"
 
 
-class User(UserMixin, PkModel):
+class User(UserMixin, TableModel):
     """A user of the app."""
 
     __tablename__ = "users"
-    username = Column(db.String(80), unique=True, nullable=False)
-    email = Column(db.String(80), unique=True, nullable=False)
-    _password = Column("password", db.LargeBinary(128), nullable=True)
-    created_at = Column(
-        db.DateTime, nullable=False, default=dt.datetime.now(dt.timezone.utc)
+    username: Mapped[str] = mapped_column(
+        db.String(80), unique=True, nullable=False
     )
-    first_name = Column(db.String(30), nullable=True)
-    last_name = Column(db.String(30), nullable=True)
-    active = Column(db.Boolean(), default=False)
-    is_admin = Column(db.Boolean(), default=False)
+    email: Mapped[str] = mapped_column(
+        db.String(80), unique=True, nullable=False
+    )
+    _password = mapped_column("password", db.LargeBinary(128), nullable=True)
+    first_name: Mapped[str] = mapped_column(db.String(30), nullable=True)
+    last_name: Mapped[str] = mapped_column(db.String(30), nullable=True)
+    active: Mapped[bool] = mapped_column(db.Boolean(), default=False)
+    is_admin: Mapped[bool] = mapped_column(db.Boolean(), default=False)
 
     @hybrid_property
     def password(self):

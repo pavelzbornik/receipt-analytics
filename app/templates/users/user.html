@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container-narrow">
+<table>
+    <tr valign="top">
+        <td>
+            <h1>User: {{ user.username }}</h1>
+            <h2>Member since: {{user.created_at.strftime("%d-%B-%Y")}}</h2>
+            {% if user.email %}<p>{{ user.email }}</p>{% endif %}
+            {% if user.first_name %}<p>{{ user.first_name }}</p>{% endif %}
+            {% if user.last_name %}<p>{{ user.last_name }}</p>{% endif %}
+            {% if user == current_user %}
+            <p><a href="{{ url_for('user.edit_profile') }}" class="btn btn-primary">Edit your profile</a></p>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+</div>
+{% endblock %}

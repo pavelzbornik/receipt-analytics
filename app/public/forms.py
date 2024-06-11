@@ -37,3 +37,5 @@ class LoginForm(FlaskForm):
             self.username.errors.append("User not activated")
             return False
         return True
+
+
