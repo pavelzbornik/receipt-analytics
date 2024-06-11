@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, render_template, redirect, url_for, flash, request
-from flask_login import login_required, current_user
-from .forms import EditProfileForm
-from .models import User
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
+
 from app.utils import flash_errors
 
-blueprint = Blueprint(
-    "user", __name__, url_prefix="/users", static_folder="../static"
-)
+from .forms import EditProfileForm
+from .models import User
+
+blueprint = Blueprint("user", __name__, url_prefix="/users", static_folder="../static")
 
 
 @blueprint.route("/")
@@ -44,6 +44,4 @@ def edit_profile():
         form.last_name.data = current_user.last_name
     else:
         flash_errors(form)
-    return render_template(
-        "users/edit_profile.html", title="Edit Profile", form=form
-    )
+    return render_template("users/edit_profile.html", title="Edit Profile", form=form)

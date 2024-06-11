@@ -46,11 +46,12 @@ class RegisterForm(FlaskForm):
 
 
 class EditProfileForm(FlaskForm):
-    username = StringField("Username", validators=[DataRequired(), Length(min=3, max=25)])
+    username = StringField(
+        "Username", validators=[DataRequired(), Length(min=3, max=25)]
+    )
 
     email = StringField(
         "Email", validators=[DataRequired(), Email(), Length(min=6, max=40)]
     )
     first_name = StringField("First Name", validators=[DataRequired()])
     last_name = StringField("Last Name", validators=[DataRequired()])
-
