@@ -5,10 +5,10 @@ from flask_login import UserMixin
 from sqlalchemy import text
 from sqlalchemy.orm.exc import ObjectDeletedError
 
-from app.database import Column, PkModel, db
+from app.database import Column, TableModel, db
 
 
-class ExampleUserModel(UserMixin, PkModel):
+class ExampleUserModel(UserMixin, TableModel):
     """Example model class for a user."""
 
     __tablename__ = "testusers"
@@ -61,8 +61,8 @@ class TestCRUDMixin:
         assert retrieved.username == expected
 
 
-class TestPkModel:
-    """PkModel tests."""
+class TestTableModel:
+    """TableModel tests."""
 
     def test_get_by_id_wrong_type(self):
         """Test get_by_id returns None for non-numeric argument."""
