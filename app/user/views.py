@@ -21,6 +21,7 @@ def members():
 @blueprint.route("/profile")
 @login_required
 def user():
+    """List user detail."""
     user = User.get_by_id(current_user.id)
     return render_template("users/user.html", user=user)
 
@@ -28,6 +29,7 @@ def user():
 @blueprint.route("/edit_profile", methods=["GET", "POST"])
 @login_required
 def edit_profile():
+    """Edit profile."""
     form = EditProfileForm()
     if form.validate_on_submit():
         current_user.username = form.username.data

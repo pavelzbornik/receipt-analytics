@@ -46,6 +46,7 @@ class RegisterForm(FlaskForm):
 
 
 class EditProfileForm(FlaskForm):
+    """Edit profile form."""
     username = StringField(
         "Username", validators=[DataRequired(), Length(min=3, max=25)]
     )
