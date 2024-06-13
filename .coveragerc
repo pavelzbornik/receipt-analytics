@@ -1,6 +1,5 @@
 [run]
 source = app
-omit = 
+omit =
     tests/*
     autoapp.py
-

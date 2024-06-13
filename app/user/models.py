@@ -2,16 +2,9 @@
 """User models."""
 from flask_login import UserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import Mapped, mapped_column
 
-from app.database import (
-    Column,
-    TableModel,
-    db,
-    reference_col,
-    relationship,
-)
+from app.database import Column, TableModel, db, reference_col, relationship
 from app.extensions import bcrypt
 
 
@@ -36,12 +29,8 @@ class User(UserMixin, TableModel):
     """A user of the app."""
 
     __tablename__ = "users"
-    username: Mapped[str] = mapped_column(
-        db.String(80), unique=True, nullable=False
-    )
-    email: Mapped[str] = mapped_column(
-        db.String(80), unique=True, nullable=False
-    )
+    username: Mapped[str] = mapped_column(db.String(80), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(db.String(80), unique=True, nullable=False)
     _password = mapped_column("password", db.LargeBinary(128), nullable=True)
     first_name: Mapped[str] = mapped_column(db.String(30), nullable=True)
     last_name: Mapped[str] = mapped_column(db.String(30), nullable=True)

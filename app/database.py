@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """Database module, including the SQLAlchemy database object and DB-related utilities."""
-from typing import Optional, Type, TypeVar
-from sqlalchemy.orm import mapped_column, Mapped
-
 from datetime import datetime, timezone
+from typing import Optional, Type, TypeVar
+
+from sqlalchemy.orm import Mapped, mapped_column
+
 from .compat import basestring
 from .extensions import db
 
