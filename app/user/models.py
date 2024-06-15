@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 """User models."""
+from time import time
+
+import jwt
+from flask import current_app
 from flask_login import UserMixin
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -50,6 +55,37 @@ class User(UserMixin, TableModel):
     def check_password(self, value):
         """Check password."""
         return bcrypt.check_password_hash(self._password, value)
+
+    def get_user_by_email(self, email):
+        """Get user by email."""
+        return User.query.filter_by(email=email).first()
+
+    def get_reset_password_token(self, expires_in=600):
+        """Get reset password token."""
+        return jwt.encode(
+            {"reset_password": self.id, "exp": time() + expires_in},
+            current_app.config["SECRET_KEY"],
+            algorithm="HS256",
+        )
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        """Verify reset password token."""
+        try:
+            payload = jwt.decode(
+                token, current_app.config["SECRET_KEY"], algorithms=["HS256"]
+            )
+            user_id = payload["reset_password"]
+            return User.get_by_id(user_id)
+        except ExpiredSignatureError:
+            current_app.logger.error("Token has expired")
+            return None
+        except InvalidTokenError:
+            current_app.logger.error("Invalid token")
+            return None
+        except KeyError:
+            current_app.logger.error("'reset_password' key missing in token")
+            return None
 
     @property
     def full_name(self):

@@ -28,6 +28,13 @@ class TestUser:
         assert bool(user.created_at)
         assert isinstance(user.created_at, dt.datetime)
 
+    def test_updated_at_defaults_to_datetime(self):
+        """Test update date."""
+        user = User(username="foo", email="foo@bar.com")
+        user.save()
+        assert bool(user.updated_at)
+        assert isinstance(user.updated_at, dt.datetime)
+
     def test_password_is_nullable(self):
         """Test null password."""
         user = User(username="foo", email="foo@bar.com")
@@ -41,6 +48,7 @@ class TestUser:
         assert bool(user.username)
         assert bool(user.email)
         assert bool(user.created_at)
+        assert bool(user.updated_at)
         assert user.is_admin is False
         assert user.active is True
         assert user.check_password("myprecious")

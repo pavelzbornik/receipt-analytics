@@ -1,0 +1,17 @@
+<nav id="tabs" class="navbar">
+    <div class="nav">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'edit_profile' %}active{% endif %}"
+                    href="{{ url_for('user.edit_profile') }}">
+                    Edit profile
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'change_password' %}active{% endif %}" href="#account-settings">
+                    Change password
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

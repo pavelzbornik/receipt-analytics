@@ -14,6 +14,7 @@ from app.extensions import (
     debug_toolbar,
     flask_static_digest,
     login_manager,
+    mail,
     migrate,
 )
 
@@ -44,6 +45,7 @@ def register_extensions(app):
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
     flask_static_digest.init_app(app)
+    mail.init_app(app)
     return None
 
 

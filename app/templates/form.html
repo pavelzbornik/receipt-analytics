@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% import "macros/bootstrap_wtf.html" as wtf %}
+
+{% block content %}
+<div class="container-narrow">
+    <h1 class="mt-5">{{title}}</h1>
+    {%if nav_bar %}
+    {% set nav_path_variable = nav_bar %}
+    {% include nav_path_variable %}
+    {% endif %}
+    {% set form_id_variable = form_id %}
+    {{ wtf.quick_form(form,id=form_id_variable) }}
+    {%if sub_text%}
+    {{sub_text|safe}}
+    {% endif %}
+</div>
+{% endblock %}
