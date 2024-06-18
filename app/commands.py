@@ -19,18 +19,14 @@ TEST_PATH = os.path.join(PROJECT_ROOT, "tests")
     is_flag=True,
     help="Show coverage report",
 )
-@click.argument(
-    "test_name",
-    required=False,
-    default=None,
-)
-def test(coverage, test_name):
+def test(coverage):
     """Run the tests."""
     import pytest
 
     args = [TEST_PATH, "--verbose"]
     if coverage:
         args.append("--cov=app")
+        args.append("--cov-report=html")
     rv = pytest.main(args)
     exit(rv)
 
